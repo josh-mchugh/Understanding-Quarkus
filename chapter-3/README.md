@@ -1,3 +1,9 @@
+# README
+
+This is the example code from Chapter 3 in the book Understanding Quarkus.
+
+Project generated with Quarkus CLI.
+
 # chapter-3 Project
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
