@@ -2,6 +2,8 @@
 
 This is the example code from Chapter 3 in the book Understanding Quarkus.
 
+Chapter 3 is an introductions for Quarkus with enviroment setup and components.
+
 Project generated with Quarkus CLI.
 
 # chapter-3 Project
