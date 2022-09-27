@@ -6,6 +6,8 @@ Chapter 4 explains the core functionality within in Quarkus such as: Context and
 
 Project generated with Quarkus CLI.
 
+Notes: `@ConfigMapping` has replaced `@ConfigProperties` as it is deprecated.
+
 # chapter-4 Project
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
