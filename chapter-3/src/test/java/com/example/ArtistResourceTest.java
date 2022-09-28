@@ -7,6 +7,8 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 
+import javax.ws.rs.core.Response;
+
 @QuarkusTest
 public class ArtistResourceTest {
 
@@ -15,18 +17,27 @@ public class ArtistResourceTest {
         given()
           .when().get("/artists")
           .then()
-             .statusCode(200)
+             .statusCode(Response.Status.OK.getStatusCode())
              .body("size()", equalTo(4));
     }
 
     @Test
     public void shouldGetArtistsCount() {
         given()
-            .when().get("artists/count")
+            .when().get("/artists/count")
             .then()
-                .assertThat().statusCode(is(200))
-            .and()
+                .statusCode(Response.Status.OK.getStatusCode())
                 .body(is("4"));
+    }
+
+    @Test
+    public void shouldGetArtistExpectFirstJohnLennon() {
+        given()
+            .when().get("/artists")
+            .then()
+                .statusCode(Response.Status.OK.getStatusCode())
+                .body("first_name[0]", is("John"))
+                .body("last_name[0]", is("Lennon"));
     }
 
 }
