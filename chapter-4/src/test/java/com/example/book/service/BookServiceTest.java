@@ -12,6 +12,7 @@ public class BookServiceTest {
 
     private Event<Book> addBookEvent;
     private Event<String> removeBookEvent;
+
     @BeforeEach
     public void setup() {
         addBookEvent = (Event<Book>) Mockito.mock(Event.class);
@@ -55,6 +56,14 @@ public class BookServiceTest {
     }
 
     @Test
+    public void whenCreateWithNullParamsExpectBook() {
+
+        BookService service = new BookServiceImpl(new IsbnGeneratorServiceImpl(), addBookEvent, removeBookEvent);
+        
+        Assertions.assertNotNull(service.create(null, null, null));
+    }
+
+    @Test
     public void whenCreateExpectAddBookEventCalledOnce() {
 
         Mockito.spy(addBookEvent);
@@ -68,9 +77,9 @@ public class BookServiceTest {
     @Test
     public void whenCreateServiceHasIssnGeneratorServiceExpectIssnFormatISBN() {
 
-        BookService service = new BookServiceImpl(new IssnGeneratorServiceImpl(), addBookEvent, removeBookEvent);
+        BookService service = new BookServiceImpl(new IsbnGeneratorServiceImpl(), addBookEvent, removeBookEvent);
         Book result = service.create("title", 0.01F, "description");
 
-        Assertions.assertTrue(result.getIsbn().startsWith("8-"));
+        Assertions.assertTrue(result.getIsbn().startsWith("13-84356-"));
     }
 }
