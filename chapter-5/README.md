@@ -2,7 +2,7 @@
 
 This is the eample code from Chapter 5 in the book Understanding Quarkus.
 
-Chapter 5 explains JDBC, JPA, and Transactions with Quarkus with a focus on Hibernate ORM Panache, for a Record (or Respository) pattern style for database interaction within the application.
+Chapter 5 explains JDBC, JPA, and Transactions with Quarkus with a focus on Hibernate ORM Panache, for a Record (or Repository) pattern style for database interaction within the application.
 
 Project generated with Quarkus CLI.
 
