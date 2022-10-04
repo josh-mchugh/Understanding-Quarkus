@@ -11,7 +11,6 @@ import java.util.Optional;
 @Transactional
 public class PublisherResource {
 
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPublishers(@QueryParam("name") String name) {
