@@ -1,4 +1,4 @@
-package com.example;
+package com.example.publisher;
 
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
@@ -11,20 +11,26 @@ import java.util.Optional;
 @Transactional
 public class PublisherResource {
 
+    private final PublisherService publisherService;
+
+    public PublisherResource(PublisherService publisherService) {
+        this.publisherService = publisherService;
+    }
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPublishers(@QueryParam("name") String name) {
 
         if(name != null) {
 
-            Optional<Publisher> publisher = Publisher.findByName(name);
+            Optional<Publisher> publisher = publisherService.findByName(name);
 
             return publisher.isPresent()
                     ? Response.ok(publisher.get()).build()
                     : Response.noContent().build();
         }
 
-        return Response.ok(Publisher.findAll().list()).build();
+        return Response.ok(publisherService.findAll()).build();
     }
 
     @GET
@@ -32,10 +38,10 @@ public class PublisherResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPublisherByName(@PathParam("id") Long id) {
 
-        Publisher publisher = Publisher.findById(id);
+        Optional<Publisher> publisher = publisherService.findById(id);
 
-        return publisher != null
-                ? Response.ok(publisher).build()
+        return publisher.isPresent()
+                ? Response.ok(publisher.get()).build()
                 : Response.noContent().build();
     }
 
@@ -44,7 +50,7 @@ public class PublisherResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response putPublisher(Publisher publisher) {
 
-        publisher.persist();
+        publisherService.persist(publisher);
 
         return Response.created(URI.create(String.format("/publishers/%s", publisher.id))).build();
     }
@@ -52,7 +58,7 @@ public class PublisherResource {
     @DELETE
     public Response deletePublisherByName(@QueryParam("name") String name) {
 
-        Publisher.deleteByName(name);
+        publisherService.deleteByName(name);
 
         return Response.ok().build();
     }
@@ -61,7 +67,7 @@ public class PublisherResource {
     @Path("/{id}")
     public Response deletePublisher(@PathParam("id") Long id) {
 
-        Publisher.deleteById(id);
+        publisherService.deleteById(id);
 
         return Response.ok().build();
     }

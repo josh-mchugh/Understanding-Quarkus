@@ -1,4 +1,4 @@
-package com.example;
+package com.example.publisher;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
