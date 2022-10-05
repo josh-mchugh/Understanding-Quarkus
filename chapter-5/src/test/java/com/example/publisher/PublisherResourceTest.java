@@ -1,6 +1,5 @@
 package com.example.publisher;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -9,8 +8,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import io.quarkus.hibernate.orm.panache.PanacheQuery;
-import io.quarkus.panache.mock.PanacheMock;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.mockito.InjectMock;
@@ -68,10 +65,8 @@ public class PublisherResourceTest {
         List<Publisher> expected = Arrays.asList(publisher);
         Mockito.when(publisherService.findAll()).thenReturn(expected);
 
-        List<Publisher> result = (List<Publisher>) RestAssured.given()
+        RestAssured.given()
             .when().get()
-            .as(new TypeRef<List<Publisher>>() {});
-
-        Assertions.assertEquals(expected, result);
+            .then().body("[0].name", CoreMatchers.is("test"));
     }
 }
