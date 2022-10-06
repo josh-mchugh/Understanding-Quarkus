@@ -3,9 +3,6 @@ package com.example.publisher;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.inject.Inject;
-import javax.json.bind.Jsonb;
-
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -21,9 +18,6 @@ import io.restassured.common.mapper.TypeRef;
 @QuarkusTest
 @TestHTTPEndpoint(PublisherResource.class)
 public class PublisherResourceTest {
-    
-    @Inject
-    Jsonb jsonb;
 
     @InjectMock
     private PublisherService publisherService;
