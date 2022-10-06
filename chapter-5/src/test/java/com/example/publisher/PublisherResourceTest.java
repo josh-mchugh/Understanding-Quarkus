@@ -3,6 +3,9 @@ package com.example.publisher;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.json.bind.Jsonb;
+
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -14,10 +17,14 @@ import io.quarkus.test.junit.mockito.InjectMock;
 import io.restassured.RestAssured;
 import io.restassured.common.mapper.TypeRef;
 
+
 @QuarkusTest
 @TestHTTPEndpoint(PublisherResource.class)
 public class PublisherResourceTest {
     
+    @Inject
+    Jsonb jsonb;
+
     @InjectMock
     private PublisherService publisherService;
 
@@ -26,9 +33,7 @@ public class PublisherResourceTest {
 
         Mockito.when(publisherService.findAll()).thenReturn(List.of());
 
-        RestAssured.given()
-            .when().get()
-            .then().statusCode(200);
+        RestAssured.get().then().statusCode(200);
     }
 
     @Test
@@ -36,8 +41,7 @@ public class PublisherResourceTest {
 
         Mockito.when(publisherService.findAll()).thenReturn(List.of());
 
-        List<Publisher> result = RestAssured.given()
-            .when().get()
+        List<Publisher> result = RestAssured.given().get()
             .as(new TypeRef<List<Publisher>>() {});
 
         Assertions.assertEquals(List.of(), result);
@@ -51,9 +55,7 @@ public class PublisherResourceTest {
 
         Mockito.when(publisherService.findAll()).thenReturn(List.of(publisher));
 
-        RestAssured.given()
-            .when().get()
-            .then().statusCode(200);
+        RestAssured.get().then().statusCode(200);
     }
 
     @Test
@@ -65,8 +67,7 @@ public class PublisherResourceTest {
         List<Publisher> expected = Arrays.asList(publisher);
         Mockito.when(publisherService.findAll()).thenReturn(expected);
 
-        RestAssured.given()
-            .when().get()
+        RestAssured.get()
             .then().body("[0].name", CoreMatchers.is("test"));
     }
 }
