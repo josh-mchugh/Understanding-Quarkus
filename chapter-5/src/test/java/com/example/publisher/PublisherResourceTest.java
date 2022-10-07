@@ -2,7 +2,9 @@ package com.example.publisher;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
+import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -10,9 +12,11 @@ import org.mockito.Mockito;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.mockito.InjectMock;
+import io.restassured.RestAssured;
 import io.restassured.common.mapper.TypeRef;
 
 import static io.restassured.RestAssured.get;
+import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
@@ -52,14 +56,48 @@ public class PublisherResourceTest {
     }
 
     @Test
-    public void whenGetPublisherHasResultThenExpectResult() {
+    public void whenGetPublisherHasResultThenExpectResults() {
 
-        Publisher publisher = new Publisher();
-        publisher.name = "test";
-
-        List<Publisher> expected = Arrays.asList(publisher);
-        Mockito.when(publisherService.findAll()).thenReturn(expected);
+        Mockito.when(publisherService.findAll())
+            .thenReturn(Arrays.asList(new Publisher()));
 
         get().then().body("size()", is(1));
+    }
+
+    @Test
+    public void whenGetPublishersWithNameHasResultExpectOk() {
+
+        Optional<Publisher> expected = Optional.of(new Publisher());
+
+        Mockito.when(publisherService.findByName(Mockito.anyString()))
+            .thenReturn(expected);
+
+        given().param("name", "test").get()
+            .then().statusCode(200);
+    }
+
+    @Test
+    public void whenGetPublishersWithNameHasResultExpectResult() {
+
+        Publisher publisher = new Publisher();
+        publisher.id = 1L;
+
+        Mockito.when(publisherService.findByName(Mockito.anyString()))
+            .thenReturn(Optional.of(publisher));
+
+        Optional<Publisher> result = given().param("name", "test")
+            .get().as(new TypeRef<Optional<Publisher>>() {});
+
+        Assertions.assertEquals(publisher.id, result.get().id);
+    }
+
+    @Test
+    public void whenGetPublishersWithNameHasNoResultExpectNoContent() {
+        
+        Mockito.when(publisherService.findByName(Mockito.anyString()))
+            .thenReturn(Optional.empty());
+
+        given().param("name", "test")
+            .get().then().statusCode(204);
     }
 }
