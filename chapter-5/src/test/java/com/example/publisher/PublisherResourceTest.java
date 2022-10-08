@@ -163,4 +163,28 @@ public class PublisherResourceTest {
         .then()
             .header("location", endsWith("/publishers/1"));
     }
+
+    @Test
+    public void whenDeletePublisherByNameThenExpectOk() {
+
+        Mockito.doNothing().when(publisherService).deleteByName(Mockito.anyString());
+
+        given()
+            .param("name", "test")
+            .delete()
+        .then()
+            .statusCode(200);
+    }
+
+    @Test
+    public void whenDeletePublisherByIdThenExpectOk() {
+
+        Mockito.doNothing().when(publisherService).deleteByName(Mockito.anyString());
+
+        given()
+            .param("id", "1")
+            .delete()
+        .then()
+            .statusCode(200);
+    }
 }
