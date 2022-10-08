@@ -73,8 +73,11 @@ public class PublisherResourceTest {
         Mockito.when(publisherService.findByName(Mockito.anyString()))
             .thenReturn(expected);
 
-        given().param("name", "test").get()
-            .then().statusCode(200);
+        given()
+            .param("name", "test")
+            .get()
+        .then()
+            .statusCode(200);
     }
 
     @Test
@@ -98,8 +101,11 @@ public class PublisherResourceTest {
         Mockito.when(publisherService.findByName(Mockito.anyString()))
             .thenReturn(Optional.empty());
 
-        given().param("name", "test")
-            .get().then().statusCode(204);
+        given()
+            .param("name", "test")
+            .get()
+        .then()
+            .statusCode(204);
     }
 
     @Test
@@ -108,13 +114,17 @@ public class PublisherResourceTest {
         Mockito.when(publisherService.findById(Mockito.anyLong()))
             .thenReturn(Optional.of(new Publisher()));
 
-        get("/{id}", 1L).then().statusCode(200);
+        get("/{id}", 1L)
+        .then()
+            .statusCode(200);
     }
 
     @Test
     public void whenGetPublisherByDoesNotHaveResultThenExpectNoContent() {
 
-        get("/{id}", 1L).then().statusCode(204);
+        get("/{id}", 1L)
+        .then()
+            .statusCode(204);
     }
 
     @Test
@@ -127,9 +137,10 @@ public class PublisherResourceTest {
         Mockito.when(publisherService.findById(Mockito.anyLong()))
             .thenReturn(Optional.of(publisher));
 
-        get("/{id}", 1L).then()
-                .body("id", is(1))
-                .body("name", is("test"));
+        get("/{id}", 1L)
+        .then()
+            .body("id", is(1))
+            .body("name", is("test"));
     }
 
     @Test
