@@ -100,4 +100,34 @@ public class PublisherResourceTest {
         given().param("name", "test")
             .get().then().statusCode(204);
     }
+
+    @Test
+    public void whenGetPublisherByIdHasResultThenExpectOk() {
+        
+        Mockito.when(publisherService.findById(Mockito.anyLong()))
+            .thenReturn(Optional.of(new Publisher()));
+
+        get("/{id}", 1L).then().statusCode(200);
+    }
+
+    @Test
+    public void whenGetPublisherByDoesNotHaveResultThenExpectNoContent() {
+
+        get("/{id}", 1L).then().statusCode(204);
+    }
+
+    @Test
+    public void whenGetPublisherByIdHasResultThenExpectResult() {
+
+        Publisher publisher = new Publisher();
+        publisher.id = 1L;
+        publisher.name = "test";
+
+        Mockito.when(publisherService.findById(Mockito.anyLong()))
+            .thenReturn(Optional.of(publisher));
+
+        get("/{id}", 1L).then()
+                .body("id", is(1))
+                .body("name", is("test"));
+    }
 }
