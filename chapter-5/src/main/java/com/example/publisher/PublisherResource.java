@@ -48,7 +48,7 @@ public class PublisherResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response putPublisher(Publisher publisher) {
+    public Response postPublisher(Publisher publisher) {
 
         publisherService.persist(publisher);
 

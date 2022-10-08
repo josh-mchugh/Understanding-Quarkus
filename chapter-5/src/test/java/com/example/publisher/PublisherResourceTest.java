@@ -12,10 +12,13 @@ import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.mockito.InjectMock;
 import io.restassured.common.mapper.TypeRef;
+import io.restassured.http.ContentType;
+import io.restassured.mapper.ObjectMapperType;
 
 import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.endsWith;
 
 @QuarkusTest
 @TestHTTPEndpoint(PublisherResource.class)
@@ -127,5 +130,37 @@ public class PublisherResourceTest {
         get("/{id}", 1L).then()
                 .body("id", is(1))
                 .body("name", is("test"));
+    }
+
+    @Test
+    public void whenPostPublisherThenExpectCreated() {
+
+        Publisher publisher = new Publisher();
+        publisher.id = 1L;
+
+        Mockito.doNothing().when(publisherService).persist(Mockito.any(Publisher.class));
+
+        given()
+            .contentType(ContentType.JSON)
+            .body(publisher, ObjectMapperType.JSONB)
+            .post()
+        .then()
+            .statusCode(201);
+    }
+
+    @Test
+    public void whenPostPublisherThenExpectLocation() {
+
+        Publisher publisher = new Publisher();
+        publisher.id = 1L;
+
+        Mockito.doNothing().when(publisherService).persist(Mockito.any(Publisher.class));
+
+        given()
+            .contentType(ContentType.JSON)
+            .body(publisher, ObjectMapperType.JSONB)
+            .post()
+        .then()
+            .header("location", endsWith("/publishers/1"));
     }
 }
