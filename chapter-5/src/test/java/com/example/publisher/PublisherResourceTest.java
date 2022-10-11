@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import javax.ws.rs.core.Response;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -32,7 +34,7 @@ public class PublisherResourceTest {
 
         Mockito.when(publisherService.findAll()).thenReturn(List.of());
 
-        get().then().statusCode(200);
+        get().then().statusCode(Response.Status.OK.getStatusCode());
     }
 
     @Test
@@ -53,7 +55,7 @@ public class PublisherResourceTest {
 
         Mockito.when(publisherService.findAll()).thenReturn(List.of(publisher));
 
-        get().then().statusCode(200);
+        get().then().statusCode(Response.Status.OK.getStatusCode());
     }
 
     @Test
@@ -77,7 +79,7 @@ public class PublisherResourceTest {
             .param("name", "test")
             .get()
         .then()
-            .statusCode(200);
+            .statusCode(Response.Status.OK.getStatusCode());
     }
 
     @Test
@@ -105,7 +107,7 @@ public class PublisherResourceTest {
             .param("name", "test")
             .get()
         .then()
-            .statusCode(204);
+            .statusCode(Response.Status.NO_CONTENT.getStatusCode());
     }
 
     @Test
@@ -116,7 +118,7 @@ public class PublisherResourceTest {
 
         get("/{id}", 1L)
         .then()
-            .statusCode(200);
+            .statusCode(Response.Status.OK.getStatusCode());
     }
 
     @Test
@@ -124,7 +126,7 @@ public class PublisherResourceTest {
 
         get("/{id}", 1L)
         .then()
-            .statusCode(204);
+            .statusCode(Response.Status.NO_CONTENT.getStatusCode());
     }
 
     @Test
@@ -156,7 +158,7 @@ public class PublisherResourceTest {
             .body(publisher, ObjectMapperType.JSONB)
             .post()
         .then()
-            .statusCode(201);
+            .statusCode(Response.Status.CREATED.getStatusCode());
     }
 
     @Test
@@ -184,7 +186,7 @@ public class PublisherResourceTest {
             .param("name", "test")
             .delete()
         .then()
-            .statusCode(200);
+            .statusCode(Response.Status.OK.getStatusCode());
     }
 
     @Test
@@ -196,6 +198,6 @@ public class PublisherResourceTest {
             .param("id", "1")
             .delete()
         .then()
-            .statusCode(200);
+            .statusCode(Response.Status.OK.getStatusCode());
     }
 }
