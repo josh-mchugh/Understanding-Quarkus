@@ -1,9 +1,17 @@
 package com.example;
 
+import javax.json.bind.annotation.JsonbProperty;
+import javax.json.bind.annotation.JsonbTransient;
+
 public class Author {
     
+    @JsonbTransient
     private Integer id;
+
+    @JsonbProperty("first_name")
     private String firstName;
+
+    @JsonbProperty("last_name")
     private String lastName;
 
     public Integer getId() {
