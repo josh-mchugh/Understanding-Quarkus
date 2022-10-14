@@ -16,7 +16,7 @@ public class AuthorTest {
     @Test
     public void whenAuthorHasFirstNameExpectFirstName() {
 
-        Author author = new Author().firstName("first");
+        Author author = new Author().setFirstName("first");
 
         Assertions.assertEquals("first", author.getFirstName());
     }
@@ -24,7 +24,7 @@ public class AuthorTest {
     @Test
     public void whenAuthorHasLastNameThenExpectLastName() {
 
-        Author author = new Author().lastName("last");
+        Author author = new Author().setLastName("last");
 
         Assertions.assertEquals("last", author.getLastName());
     }

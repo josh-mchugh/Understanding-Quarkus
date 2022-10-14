@@ -7,10 +7,8 @@ public class Author {
     
     @JsonbTransient
     private Integer id;
-
     @JsonbProperty("first_name")
     private String firstName;
-
     @JsonbProperty("last_name")
     private String lastName;
 
@@ -27,7 +25,7 @@ public class Author {
         return firstName;
     }
 
-    public Author firstName(String firstName) {
+    public Author setFirstName(String firstName) {
         this.firstName = firstName;
         return this;
     }
@@ -36,7 +34,7 @@ public class Author {
         return lastName;
     }
 
-    public Author lastName(String lastName) {
+    public Author setLastName(String lastName) {
         this.lastName = lastName;
         return this;
     }

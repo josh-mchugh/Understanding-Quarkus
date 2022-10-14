@@ -2,13 +2,13 @@ package com.example;
 
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
+import io.restassured.http.ContentType;
 
-import org.hamcrest.CoreMatchers;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.Matchers.hasKey;
 
 import javax.ws.rs.core.Response;
@@ -81,5 +81,33 @@ public class AuthorResourceTest {
         .then()
           .body("first_name", is("H.P."))
           .body("last_name", is("Lovecraft"));
+    }
+
+    @Test
+    public void whenPostAuthorIsValidThenExpectCreated() {
+
+      Author author = new Author().setFirstName("tester").setLastName("1");
+    
+      given()
+        .contentType(ContentType.JSON)
+        .body(author)
+        .when()
+          .post()
+        .then()
+          .statusCode(Response.Status.CREATED.getStatusCode());
+    }
+
+    @Test
+    public void whenPostAuthorIsValidThenExpectLocationHeader() {
+
+      Author author = new Author().setFirstName("tester").setLastName("2");
+    
+      given()
+        .contentType(ContentType.JSON)
+        .body(author)
+        .when()
+          .post()
+        .then()
+          .header("location", is(notNullValue()));
     }
 }
