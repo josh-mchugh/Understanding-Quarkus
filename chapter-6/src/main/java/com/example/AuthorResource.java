@@ -17,8 +17,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
-import org.jboss.resteasy.reactive.ResponseStatus;
-
 @Path("/author")
 public class AuthorResource {
 
