@@ -2,7 +2,7 @@
 
 This is the eample code similar to Chapter 6 in the book Understanding Quarkus.
 
-Chapter 6 explains Quarkus RESTful webservices. Shows how to use JAX-RS to make easy endpoints that consume and produce different media types. Shows the client API and how to interact with existing endpoints without all the boiler plate code. Examples of open-api and swagger ui.
+Chapter 6 explains Quarkus RESTful webservices. Shows how to use JAX-RS to make easy endpoints that consume and produce different media types. Examples of open-api and swagger ui.
 
 Project generated with Quarkus CLI.
 
