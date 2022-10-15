@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -49,9 +50,7 @@ public class AuthorResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAuthor(@PathParam("id") Integer id) {
 
-        Optional<Author> authorOptional = authors.stream()
-            .filter(author -> author.getId().equals(id))
-            .findFirst();
+        Optional<Author> authorOptional = findAuthorById(id);
 
         return authorOptional.isPresent() 
             ? Response.ok(authorOptional.get()).build()
@@ -83,9 +82,7 @@ public class AuthorResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response putAuthor(@PathParam("id") Integer id, Author updatedAuthor) {
 
-        Optional<Author> authorOptional = authors.stream()
-            .filter(author -> author.getId().equals(id))
-            .findFirst();
+        Optional<Author> authorOptional = findAuthorById(id);
 
         if(authorOptional.isPresent()) {
             
@@ -97,5 +94,28 @@ public class AuthorResource {
         }
 
         return Response.noContent().build();
+    }
+
+    @DELETE
+    @Path("/{id}")
+    public Response deleteAuthor(@PathParam("id") Integer id) {
+
+        Optional<Author> authorOptional = findAuthorById(id);
+
+        if(authorOptional.isPresent()) {
+
+            authors.removeIf(author -> author.getId().equals(id));
+
+            return Response.ok().build();
+        }
+
+        return Response.noContent().build();
+    }
+
+    private Optional<Author> findAuthorById(Integer id) {
+
+        return authors.stream()
+            .filter(author -> author.getId().equals(id))
+            .findFirst();
     }
 }

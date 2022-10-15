@@ -139,4 +139,35 @@ public class AuthorResourceTest {
         .then()
           .statusCode(Response.Status.OK.getStatusCode());
     }
+
+    @Test
+    public void whenPutAuthorHasInvalidIdThenExpectNoContent() {
+
+      given()
+        .contentType(ContentType.JSON)
+        .when()
+          .put("/{id}", Integer.MIN_VALUE)
+        .then()
+          .statusCode(Response.Status.NO_CONTENT.getStatusCode());
+    }
+
+    @Test
+    public void whenDeleteAuthorHasValidIdThenExpectOk() {
+
+      given()
+        .when()
+          .delete("/{id}", 2)
+        .then()
+          .statusCode(Response.Status.OK.getStatusCode());
+    }
+
+    @Test
+    public void whenDeleteAuthorHasInvalidIdThenExpectNoContent() {
+
+      given()
+        .when()
+          .delete("/{id}", Integer.MIN_VALUE)
+        .then()
+          .statusCode(Response.Status.NO_CONTENT.getStatusCode());
+    }
 }
