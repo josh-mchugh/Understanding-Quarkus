@@ -8,6 +8,7 @@ import java.util.Optional;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -67,5 +68,27 @@ public class AuthorResource {
         URI uri = UriBuilder.fromPath(String.format("/author/%s", author.getId())).build();
 
         return Response.created(uri).build();
+    }
+
+    @PUT
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response putAuthor(@PathParam("id") Integer id, Author updatedAuthor) {
+
+        Optional<Author> authorOptional = authors.stream()
+            .filter(author -> author.getId().equals(id))
+            .findFirst();
+
+        if(authorOptional.isPresent()) {
+            
+            Author author = authorOptional.get();
+            author.setFirstName(updatedAuthor.getFirstName());
+            author.setLastName(updatedAuthor.getLastName());
+
+            return Response.ok(author).build();
+        }
+
+        return Response.noContent().build();
     }
 }
