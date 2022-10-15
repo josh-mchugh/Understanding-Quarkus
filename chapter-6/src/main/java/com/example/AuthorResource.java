@@ -16,6 +16,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
+import org.jboss.resteasy.reactive.ResponseStatus;
+
 @Path("/author")
 public class AuthorResource {
 
@@ -60,6 +62,11 @@ public class AuthorResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response postAuthor(Author author) {
+
+        if(author == null) {
+
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
 
         author.id(authors.size() + 1);
 

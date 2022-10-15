@@ -100,7 +100,9 @@ public class AuthorResourceTest {
     @Test
     public void whenPostAuthorIsValidThenExpectLocationHeader() {
 
-      Author author = new Author().setFirstName("tester").setLastName("2");
+      Author author = new Author()
+        .setFirstName("tester")
+        .setLastName("2");
     
       given()
         .contentType(ContentType.JSON)
@@ -109,5 +111,32 @@ public class AuthorResourceTest {
           .post()
         .then()
           .header("location", is(notNullValue()));
+    }
+
+    @Test
+    public void whenPostAuthorHasNullBodyThenExpectBadRequest() {
+
+      given()
+        .contentType(ContentType.JSON)
+        .when()
+          .post()
+        .then()
+          .statusCode(Response.Status.BAD_REQUEST.getStatusCode());
+    }
+
+    @Test
+    public void whenPutAuthorIsValidThenExpectOk() {
+
+      Author author = new Author()
+        .setFirstName("John")
+        .setLastName("Doe");
+
+      given()
+        .contentType(ContentType.JSON)
+        .body(author)
+        .when()
+          .put("/{id}", 5)
+        .then()
+          .statusCode(Response.Status.OK.getStatusCode());
     }
 }
