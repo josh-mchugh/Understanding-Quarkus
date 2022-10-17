@@ -17,6 +17,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+
 @Path("/author")
 public class AuthorResource {
 
@@ -31,6 +34,11 @@ public class AuthorResource {
     @GET
     @Path("/hello")
     @Produces(MediaType.TEXT_PLAIN)
+    @Operation(summary = "Returns a static plain text response")
+    @APIResponse(
+        responseCode = "200",
+        description = "Plain text message"
+    )
     public String hello() {
 
         return "Hello this is an exmple of plain text";
@@ -38,6 +46,11 @@ public class AuthorResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Returns a list of Authors")
+    @APIResponse(
+        responseCode = "200",
+        description = "The whole list of Authors"
+    )
     public Response getAuthors() {
 
         return Response.ok(authors).build();
@@ -46,6 +59,15 @@ public class AuthorResource {
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Returns an Author by a given id")
+    @APIResponse(
+        responseCode = "200",
+        description = "Author with the requested id"
+    )
+    @APIResponse(
+        responseCode = "204",
+        description = "No Author found with the requested id"
+    )
     public Response getAuthor(@PathParam("id") Integer id) {
 
         Optional<Author> authorOptional = findAuthorById(id);
@@ -58,6 +80,15 @@ public class AuthorResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Adds an Author")
+    @APIResponse(
+        responseCode = "200",
+        description = "Author added to the system"
+    )
+    @APIResponse(
+        responseCode = "400",
+        description = "Request parameters are invalid"
+    )
     public Response postAuthor(Author author) {
 
         if(author == null) {
@@ -78,6 +109,15 @@ public class AuthorResource {
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Updates an Author by id")
+    @APIResponse(
+        responseCode = "200",
+        description = "Successfully updated the Author by requested id"
+    )
+    @APIResponse(
+        responseCode = "204",
+        description = "Author not found by requested id"
+    )
     public Response putAuthor(@PathParam("id") Integer id, Author updatedAuthor) {
 
         Optional<Author> authorOptional = findAuthorById(id);
@@ -96,6 +136,15 @@ public class AuthorResource {
 
     @DELETE
     @Path("/{id}")
+    @Operation(summary = "Remove an Author by id")
+    @APIResponse(
+        responseCode = "200",
+        description = "Author successfully removed by requested id"
+    )
+    @APIResponse(
+        responseCode = "204",
+        description = "Author not found by requested id"
+    )
     public Response deleteAuthor(@PathParam("id") Integer id) {
 
         Optional<Author> authorOptional = findAuthorById(id);
