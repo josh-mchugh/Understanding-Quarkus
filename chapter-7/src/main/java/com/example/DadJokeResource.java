@@ -5,14 +5,22 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+
 @Path("/dad")
 public class DadJokeResource {
 
+    private final JokeClient jokeClient;
+
+    public DadJokeResource(@RestClient JokeClient jokeClient) {
+        this.jokeClient = jokeClient;
+    }
+
     @GET
     @Path("/joke")
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_HTML)
     public String getDadJoke() {
 
-        return " My dog used to chase people on a bike a lot. It got so bad I had to take his bike away.";
+        return jokeClient.getDadJoke().getJoke();
     }
 }
