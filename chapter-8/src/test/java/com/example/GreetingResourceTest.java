@@ -31,7 +31,7 @@ public class GreetingResourceTest {
                 .get("/hello/all?name=test")
             .then()
                 .statusCode(Response.Status.OK.getStatusCode())
-                .body("size()", is(11));
+                .body("size()", is(10));
     }
 
 }

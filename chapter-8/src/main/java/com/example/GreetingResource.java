@@ -8,12 +8,19 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import org.eclipse.microprofile.reactive.messaging.Channel;
+import org.eclipse.microprofile.reactive.messaging.Emitter;
+import org.eclipse.microprofile.reactive.messaging.Message;
 
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 
 @Path("/hello")
 public class GreetingResource {
+
+    private final Emitter<GreetingRequest> emmiter;
 
     private final List<String> GREETINGS = new ArrayList<>(List.of(
         "Hello",
@@ -25,9 +32,12 @@ public class GreetingResource {
         "olá",
         "asalaam alaikum",
         "konnichiwa",
-        "anyoung haseyo",
-        "Zdravstvuyte"
+        "anyoung haseyo"
     ));
+
+    public GreetingResource(@Channel("greeing-request") Emitter<GreetingRequest> emmiter) {
+        this.emmiter = emmiter;
+    }
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
@@ -49,5 +59,15 @@ public class GreetingResource {
     private String formatGreeting(String greeting, String name) {
 
         return String.format("%s %s", greeting, name);
+    }
+
+    @GET
+    @Path("/event")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response getGreetingEvent(@QueryParam("lang") String lang, @QueryParam("name") String name) {
+
+        emmiter.send(Message.of(new GreetingRequest(lang, name)));
+
+        return Response.ok().build();
     }
 }
