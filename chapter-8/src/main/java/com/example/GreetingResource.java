@@ -9,6 +9,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 
 @Path("/hello")
@@ -34,6 +35,15 @@ public class GreetingResource {
 
         return Uni.createFrom()
             .item(formatGreeting("Hello", name));
+    }
+
+    @GET
+    @Path("/all")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Multi<String> getDefaultGreetings(@QueryParam("name") String name) {
+
+        return Multi.createFrom().items(GREETINGS.stream())
+            .map(greeting -> formatGreeting(greeting, name));
     }
 
     private String formatGreeting(String greeting, String name) {
