@@ -20,7 +20,7 @@ public class MyLivenessCheckTest {
                 .get("/q/health/live")
             .then()
                 .statusCode(Response.Status.OK.getStatusCode())
-                .body("checks[0].name", is("Mic Check.. 1.. 2.."))
-                .body("checks[0].status", is("UP"));
+                .body("checks[1].name", is("alive"))
+                .body("checks[1].status", is("UP"));
     }
 }
