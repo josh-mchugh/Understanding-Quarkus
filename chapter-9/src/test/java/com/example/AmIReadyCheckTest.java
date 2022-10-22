@@ -7,7 +7,9 @@ import org.junit.jupiter.api.Test;
 import io.quarkus.test.junit.QuarkusTest;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.hasItem;
+
+import java.util.Map;
 
 @QuarkusTest
 public class AmIReadyCheckTest {
@@ -15,12 +17,16 @@ public class AmIReadyCheckTest {
     @Test
     public void whenAmIReadyCheckExpectUp() {
 
+        Map<String, String> expected = Map.of(
+            "name", "Ready or not... here we go",
+            "status", "UP"
+        );
+
         given()
             .when()
                 .get("/q/health/ready")
             .then()
                 .statusCode(Response.Status.OK.getStatusCode())
-                .body("checks[0].name", is("Ready or not... here we go"))
-                .body("checks[0].status", is("UP"));
+                .body("checks", hasItem(expected));
     }
 }
