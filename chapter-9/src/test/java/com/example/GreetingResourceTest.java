@@ -1,6 +1,8 @@
 package com.example;
 
 import io.quarkus.test.junit.QuarkusTest;
+import io.restassured.http.ContentType;
+
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -29,10 +31,11 @@ public class GreetingResourceTest {
 
         given()
             .when()
+                .accept(ContentType.JSON)
                 .get("/q/metrics/application")
             .then()
                 .statusCode(Response.Status.OK.getStatusCode())
-                .body(CoreMatchers.containsString("application_com_example_GreetingResource_hello_total 1.0"));
+                .body("'com.example.GreetingResource.hello'", is(1));
     }
 
 }
