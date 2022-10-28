@@ -9,6 +9,7 @@ import io.quarkus.test.junit.QuarkusTest;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.Matchers.hasKey;
 
 import static io.restassured.RestAssured.given;
 
@@ -20,8 +21,7 @@ public class IsbnResourceTest {
     public void whenRequestIsValidThenExpectOk() {
 
         given()
-            .when()
-                .get()
+            .when().get()
             .then()
                 .statusCode(Response.Status.OK.getStatusCode());
     }
@@ -32,7 +32,9 @@ public class IsbnResourceTest {
         given()
             .when().get()
             .then()
-                .body("isbn10", is(notNullValue()))
-                .body("isbn13", is(notNullValue()));
+                .body("$", hasKey("isbn_10"))
+                .body("$", hasKey("isbn_13"))
+                .body("isbn_10", is(notNullValue()))
+                .body("isbn_13", is(notNullValue()));
     }
 }
