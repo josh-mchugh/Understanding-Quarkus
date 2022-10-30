@@ -2,11 +2,16 @@ package com.example;
 
 import javax.json.bind.annotation.JsonbProperty;
 
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+
+@Schema(description = "Several formats of book ISBN numbers")
 public class IsbnNumbers {
  
+    @Schema(required = true)
     @JsonbProperty("isbn_10")
     private String isbn10;
 
+    @Schema(required = true)
     @JsonbProperty("isbn_13")
     private String isbn13;
 
