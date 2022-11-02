@@ -1,5 +1,6 @@
 package com.example;
 
+import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
 import javax.json.Json;
@@ -10,6 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.eclipse.microprofile.faulttolerance.Fallback;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import com.example.numbers.IsbnNumbers;
@@ -27,6 +29,7 @@ public class BookResource {
     }
 
     @GET
+    @Fallback(fallbackMethod = "getRandomBookFallback")
     public Response getRandomBook() {
 
         IsbnNumbers numbers = numberResourceProxy.generateIsbnNumbers();
@@ -44,5 +47,15 @@ public class BookResource {
             .build();
 
         return Response.ok(book).build();
+    }
+
+    private Response getRandomBookFallback() {
+
+        JsonObject book = Json.createObjectBuilder()
+            .add("title", "Fallback Book")
+            .add("timestamp", LocalDateTime.now().toString())
+            .build();
+
+            return Response.ok(book).build();
     }
 }

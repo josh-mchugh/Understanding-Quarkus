@@ -47,11 +47,23 @@ public class BookResourceTest {
             .when().get()
             .then()
                 .body("isbn_10", is("isbn10"))
-                .body("isbn_13", is("isbn_13"))
+                .body("isbn_13", is("isbn13"))
                 .body("title", notNullValue())
                 .body("author", notNullValue())
                 .body("genre", notNullValue())
                 .body("publisher", notNullValue())
+                .body("timestamp", notNullValue());
+    }
+
+    @Test
+    public void whenGetRandomBookFallsBackExpectBody() {
+
+        when(numberResourceProxy.generateIsbnNumbers()).thenThrow(RuntimeException.class);
+
+        given()
+            .when().get()
+            .then()
+                .body("title", is("Fallback Book"))
                 .body("timestamp", notNullValue());
     }
 
