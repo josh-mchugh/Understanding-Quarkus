@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.eclipse.microprofile.faulttolerance.Fallback;
+import org.eclipse.microprofile.metrics.annotation.Counted;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import com.example.numbers.IsbnNumbers;
@@ -30,6 +31,10 @@ public class BookResource {
 
     @GET
     @Fallback(fallbackMethod = "getRandomBookFallback")
+    @Counted(
+        name = "getRandomBook",
+        description = "Counts how many times the getRandomBook method has been invoked"
+    )
     public Response getRandomBook() {
 
         IsbnNumbers numbers = numberResourceProxy.generateIsbnNumbers();
