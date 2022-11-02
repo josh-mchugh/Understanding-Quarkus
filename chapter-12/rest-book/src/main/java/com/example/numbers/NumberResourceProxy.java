@@ -1,6 +1,5 @@
 package com.example.numbers;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Singleton;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
