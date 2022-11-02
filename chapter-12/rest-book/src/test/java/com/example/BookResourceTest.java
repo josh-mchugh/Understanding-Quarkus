@@ -15,6 +15,10 @@ import io.quarkus.test.junit.mockito.InjectMock;
 import static io.restassured.RestAssured.given;
 import static org.mockito.Mockito.when;
 
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.is;
+
+
 @QuarkusTest
 @TestHTTPEndpoint(BookResource.class)
 public class BookResourceTest {
@@ -26,11 +30,37 @@ public class BookResourceTest {
     @Test
     public void whenGetRandomBookIsValidThenExpectOk() {
 
-        when(numberResourceProxy.generateIsbnNumbers()).thenReturn(new IsbnNumbers());
+        when(numberResourceProxy.generateIsbnNumbers()).thenReturn(getIsbnNumbers());
 
         given()
             .when().get()
             .then()
                 .statusCode(Response.Status.OK.getStatusCode());
+    }
+
+    @Test
+    public void whenGetRandomBookIsValidThenExpectBody() {
+
+        when(numberResourceProxy.generateIsbnNumbers()).thenReturn(getIsbnNumbers());
+
+        given()
+            .when().get()
+            .then()
+                .body("isbn_10", is("isbn10"))
+                .body("isbn_13", is("isbn_13"))
+                .body("title", notNullValue())
+                .body("author", notNullValue())
+                .body("genre", notNullValue())
+                .body("publisher", notNullValue())
+                .body("timestamp", notNullValue());
+    }
+
+    private IsbnNumbers getIsbnNumbers() {
+
+        IsbnNumbers numbers = new IsbnNumbers();
+        numbers.setIsbn10("isbn10");
+        numbers.setIsbn13("isbn13");
+
+        return numbers;
     }
 }

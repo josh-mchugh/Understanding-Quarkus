@@ -1,5 +1,9 @@
 package com.example;
 
+import java.util.concurrent.TimeUnit;
+
+import javax.json.Json;
+import javax.json.JsonObject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -10,6 +14,7 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import com.example.numbers.IsbnNumbers;
 import com.example.numbers.NumberResourceProxy;
+import com.github.javafaker.Faker;
 
 @Path("/api/books")
 @Produces(MediaType.APPLICATION_JSON)
@@ -26,6 +31,18 @@ public class BookResource {
 
         IsbnNumbers numbers = numberResourceProxy.generateIsbnNumbers();
 
-        return Response.ok().build();
+        Faker faker = new Faker();
+
+        JsonObject book = Json.createObjectBuilder()
+            .add("isbn_13", numbers.getIsbn13())
+            .add("isbn_10", numbers.getIsbn10())
+            .add("title", faker.book().title())
+            .add("author", faker.book().author())
+            .add("genre", faker.book().genre())
+            .add("publisher", faker.book().publisher())
+            .add("timestamp", faker.date().past(365 * 100, TimeUnit.DAYS).toString())
+            .build();
+
+        return Response.ok(book).build();
     }
 }
